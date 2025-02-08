@@ -1,0 +1,6 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/Gordeszka_sim/.vs/Gordeszka_sim
+/Gordeszka_sim/Gordeszka_sim/obj
