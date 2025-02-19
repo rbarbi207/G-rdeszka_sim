@@ -12,10 +12,13 @@ namespace Gordeszka_sim
     {
         public string Name { get; set; }
         public int Strictness { get; set; }
-        public Judge(string name, int strictness)
+        public ConsoleColor Color { get; set; }
+
+        public Judge(string name, int strictness, ConsoleColor color = ConsoleColor.White)
         {
             Name = name;
             Strictness = strictness;
+            Color = color;
         } 
 
         public int Rating(Trick trick)

@@ -13,7 +13,7 @@ namespace Gordeszka_sim
             new Skater("Blaze Ryder", 70),
             new Skater("Dash Cruz", 90),
             new Skater("Jett Skye", 50),
-            new Skater("Ollie Kings", 65)
+            new Skater("Ollie Kings", 40)
         };
 
         static List<Trick> tricks = new List<Trick>()
@@ -45,9 +45,9 @@ namespace Gordeszka_sim
 
         static List<Judge> judges = new List<Judge>()
         {
-            new Judge("Chris Cole", 3),
-            new Judge("Paul Rodriguez", 2),
-            new Judge("Ryan Schekler", 4)
+            new Judge("Chris Cole", 3, ConsoleColor.Yellow),
+            new Judge("Paul Rodriguez", 2, ConsoleColor.Blue),
+            new Judge("Ryan Schekler", 4, ConsoleColor.Green)
         };
 
         static Skater selectedSkater = null!;
@@ -506,9 +506,11 @@ namespace Gordeszka_sim
             Console.Clear();
             if (selectedSkater.tricks.Count < 8)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("A versenyző nem tud elég trükköt az indításhoz.");
                 Console.WriteLine("\n--> Enter <---");
                 Console.ReadKey();
+                Console.ResetColor();
                 return;
             }
 
@@ -526,7 +528,9 @@ namespace Gordeszka_sim
                     if (random.Next(1, 81) < ((selectedSkater.tricks[selected].Injury * 10) - (selectedSkater.Skill / 2)))
                     {
                         injuryCount++;
-                        Console.WriteLine($"{selectedSkater.tricks[selected].Name} trükk végrehajtása közben sérülés történt!");
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"{selectedSkater.tricks[selected].Name} trükk végrehajtása közben sérülés történt!\n");
+                        Console.ResetColor();
                         selectedTricks.Add(selectedSkater.tricks[selected].Name);
 
                         if (injuryCount >= 2)
@@ -538,14 +542,17 @@ namespace Gordeszka_sim
                     }
                     else
                     {
-                        Console.WriteLine($"A {selectedSkater.tricks[selected].Name} trükk sikerült!");
+                        Console.WriteLine($"A(z) {selectedSkater.tricks[selected].Name} trükk sikerült!");
                         foreach (var judge in judges)
                         {
+
                             int judgeScore = judge.Rating(selectedSkater.tricks[selected]);
                             score += judgeScore;
+                            Console.ForegroundColor = judge.Color;
                             Console.Write($"{judge.Name} adott rá {judgeScore} pontot.\t");
                         }
-                            Console.WriteLine($"Összesen: {score} pont");
+                        Console.ResetColor();
+                        Console.WriteLine($"Összesen: {score} pont\n");
                         selectedSkater.Score += score;
                         selectedTricks.Add(selectedSkater.tricks[selected].Name);
                     }
@@ -592,7 +599,7 @@ namespace Gordeszka_sim
             foreach (var letter in value)
             {
                 Console.Write(letter);
-                Thread.Sleep(10);
+                Thread.Sleep(15);
             }
             Console.WriteLine();
         }
