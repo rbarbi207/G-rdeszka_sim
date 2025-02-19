@@ -7,15 +7,16 @@ namespace Gordeszka_sim
 {
     internal class Program
     {
-        List<Skater> skaters = new List<Skater>()
+        static List<Skater> skaters = new List<Skater>()
         {
             new Skater("Axel Strom", 85),
             new Skater("Blaze Ryder", 70),
             new Skater("Dash Cruz", 90),
-            new Skater("Jett Skye", 50)
+            new Skater("Jett Skye", 50),
+            new Skater("Ollie Kings", 65)
         };
 
-        List<Trick> tricks = new List<Trick>()
+        static List<Trick> tricks = new List<Trick>()
         {
             new Trick("Ollie", 15, 3, 1),
             new Trick("Tailgrab", 30, 4, 2),
@@ -40,19 +41,18 @@ namespace Gordeszka_sim
             new Trick("Nollie Inward Heelflip", 100, 10, 9)
         };
 
-        List<Record> records = new List<Record>();
+        static List<Record> records = new List<Record>();
 
-        List<Judge> judges = new List<Judge>()
+        static List<Judge> judges = new List<Judge>()
         {
             new Judge("Chris Cole", 3),
             new Judge("Paul Rodriguez", 2),
             new Judge("Ryan Schekler", 4)
         };
 
-        Skater selectedSkater = null!;
-        Trick selectedTrick = null!;
-
-        void Main(string[] args)
+        static Skater selectedSkater = null!;
+        static Trick selectedTrick = null!;
+        static void Main()
         {
             Console.CursorVisible = false;
 
@@ -145,9 +145,9 @@ namespace Gordeszka_sim
                                             break;
                                         }
                                     }
-                                    else if (key == ConsoleKey.Escape) 
+                                    else if (key == ConsoleKey.Escape)
                                     {
-                                        return; 
+                                        return;
                                     }
                                 }
                             }
@@ -163,10 +163,10 @@ namespace Gordeszka_sim
                                 Console.WriteLine("Először válassz versenyzőt!");
                             }
                             break;
-                        case '4':
+                        case '3':
                             Rekordok(records);
                             break;
-                        case '5':
+                        case '4':
                             if (selectedSkater != null)
                             {
                                 Simindítás(selectedSkater!, judges, records);
@@ -177,7 +177,7 @@ namespace Gordeszka_sim
                                 Console.WriteLine("Először válassz versenyzőt!");
                             }
                             break;
-                        case '6':
+                        case '5':
                             Environment.Exit(0);
                             break;
                         default:
@@ -185,10 +185,9 @@ namespace Gordeszka_sim
                     }
                     Console.ReadKey();
                 }
-                while (v != '6');
+                while (v != '5');
             }
         }
-
         static char Menu(List<Skater> skaters, Skater selectedSkater)
         {
             int choice = 0;
@@ -196,7 +195,6 @@ namespace Gordeszka_sim
             {
                 "Versenyző kiválasztása",
                 "Trükkök",
-                "Képesség fejlesztés",
                 "Rekordok",
                 "Szimulátor indítása",
                 "Kilépés"
@@ -243,15 +241,14 @@ namespace Gordeszka_sim
                 }
             }
         }
-
-        void Versenyzővalasztás(List<Skater> skaters)
+        static void Versenyzővalasztás(List<Skater> skaters)
         {
             int choice = 0;
             while (true)
-            { 
+            {
                 Console.Clear();
                 Console.WriteLine("Válassz egy skatert!\n");
-                
+
                 for (int i = 0; i < skaters.Count; i++)
                 {
                     if (i == choice)
@@ -267,7 +264,7 @@ namespace Gordeszka_sim
                     Console.WriteLine($"{i + 1}. {skaters[i].Name} - Skill: {skaters[i].Skill}");
                     Console.ResetColor();
                 }
-                
+
                 var key = Console.ReadKey(true).Key;
 
                 if (key == ConsoleKey.UpArrow)
@@ -291,11 +288,10 @@ namespace Gordeszka_sim
                 }
                 else if (key == ConsoleKey.Escape)
                 {
-                    return; 
+                    return;
                 }
             }
         }
-
         static void Trukkok(Skater selectedSkater, List<Skater> skaters, List<Trick> tricks, Trick selectedTrick)
         {
             int choice = 0;
@@ -350,18 +346,17 @@ namespace Gordeszka_sim
                     {
                         trukkLista(selectedSkater);
                     }
-                    else if (choice == 2) 
+                    else if (choice == 2)
                     {
                         break;
                     }
                 }
-                else if (key == ConsoleKey.Escape) 
+                else if (key == ConsoleKey.Escape)
                 {
-                    return; 
+                    return;
                 }
             }
         }
-
         static void ujTrukk(List<Trick> tricks, Skater selectedSkater, Trick selectedTrick)
         {
             int choice = 0;
@@ -461,13 +456,12 @@ namespace Gordeszka_sim
 
 
         }
-
         static void trukkLista(Skater selectedSkater)
         {
             int i = 1;
             Console.Clear();
 
-            foreach (var trick in selectedSkater.tricks) 
+            foreach (var trick in selectedSkater.tricks)
             {
                 Console.WriteLine($"{i}. {trick.Name}, Nehézség: {trick.Difficulty}");
                 i++;
@@ -475,7 +469,6 @@ namespace Gordeszka_sim
             Console.WriteLine("\n-->Enter<--");
             Console.ReadKey();
         }
-
         static void Rekordok(List<Record> records)
         {
             Console.Clear();
@@ -487,12 +480,21 @@ namespace Gordeszka_sim
             }
             else
             {
-                IEnumerable<Record> query = from record in records
-                                            orderby record.Points descending
-                                            select record;
-                foreach (var record in query)
+                for (int i = 0; i < records.Count - 1; i++)
                 {
-                    Console.WriteLine(record); 
+                    for (int j = 0; j < records.Count - 1; j++)
+                    {
+                        if (records[j].Points < records[j + 1].Points)
+                        {
+                            var temp = records[j];
+                            records[j] = records[j + 1];
+                            records[j + 1] = temp;
+                        }
+                    }
+                }
+                foreach (var record in records)
+                {
+                    Console.WriteLine(record);
                 }
             }
 
@@ -516,11 +518,12 @@ namespace Gordeszka_sim
 
             while (selectedTricks.Count < 8)
             {
+                int score = 0;
                 int selected = random.Next(selectedSkater.tricks.Count);
                 if (!selectedTricks.Contains(selectedSkater.tricks[selected].Name))
                 {
                     TypeLine($"Most próbálkozol a {selectedSkater.tricks[selected].Name} trükköt végrehajtani!");
-                    if (random.Next(1, 101) < ((selectedSkater.tricks[selected].Injury * 10) - (selectedSkater.Skill / 2)))
+                    if (random.Next(1, 91) < ((selectedSkater.tricks[selected].Injury * 10) - (selectedSkater.Skill / 2)))
                     {
                         injuryCount++;
                         Console.WriteLine($"{selectedSkater.tricks[selected].Name} trükk végrehajtása közben sérülés történt!");
@@ -530,12 +533,11 @@ namespace Gordeszka_sim
                         {
                             selectedSkater.Score = 0;
                             Console.WriteLine("A versenyző kétszer is megsérült! Sajnos kiesett a versenyből.");
-                            return;  
+                            return;
                         }
                     }
                     else
                     {
-                        int score = 0;
                         Console.WriteLine($"A {selectedSkater.tricks[selected].Name} trükk sikerült!");
                         foreach (var judge in judges)
                         {
@@ -543,14 +545,44 @@ namespace Gordeszka_sim
                             score += judgeScore;
                             Console.Write($"{judge.Name} adott rá {judgeScore} pontot.\t");
                         }
-                        Console.WriteLine($"Összesen: {score} pont");
+                            Console.WriteLine($"Összesen: {score} pont");
                         selectedSkater.Score += score;
                         selectedTricks.Add(selectedSkater.tricks[selected].Name);
                     }
                 }
+            } 
+            if (selectedSkater.Score < 100)
+            {
+                Console.WriteLine($"{selectedSkater.Name} összesen {selectedSkater.Score} pontot szerzett");
+            }
+            if (selectedSkater.Score >= 100 && selectedSkater.Score < 150)
+            {
+                selectedSkater.Skill += 1;
+                if (selectedSkater.Skill >= 100)
+                {
+                    selectedSkater.Skill = 100;
+                }
+                Console.WriteLine($"{selectedSkater.Name} összesen {selectedSkater.Score} pontot szerzett. Skill: {selectedSkater.Skill} (1-el nőt).");
+            }
+            else if (selectedSkater.Score >= 150 && selectedSkater.Score < 200)
+            {
+                selectedSkater.Skill += 3;
+                if (selectedSkater.Skill >= 100)
+                {
+                    selectedSkater.Skill = 100;
+                }
+                Console.WriteLine($"{selectedSkater.Name} összesen {selectedSkater.Score} pontot szerzett. Skill: {selectedSkater.Skill} (3-el nőt).");
+            }
+            else if (selectedSkater.Score >= 200)
+            {
+                selectedSkater.Skill += 5;
+                if (selectedSkater.Skill >= 100)
+                {
+                    selectedSkater.Skill = 100;
+                }
+                Console.WriteLine($"{selectedSkater.Name} összesen {selectedSkater.Score} pontot szerzett. Skill: {selectedSkater.Skill} (5-el nőt).");
             }
 
-            Console.WriteLine($"{selectedSkater.Name} végső pontszáma: {selectedSkater.Score} pont");
             records.Add(new Record(selectedSkater.Name, selectedSkater.Score));
             Console.WriteLine("--> Enter <---");
         }
