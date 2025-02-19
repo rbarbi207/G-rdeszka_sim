@@ -523,7 +523,7 @@ namespace Gordeszka_sim
                 if (!selectedTricks.Contains(selectedSkater.tricks[selected].Name))
                 {
                     TypeLine($"Most próbálkozol a {selectedSkater.tricks[selected].Name} trükköt végrehajtani!");
-                    if (random.Next(1, 91) < ((selectedSkater.tricks[selected].Injury * 10) - (selectedSkater.Skill / 2)))
+                    if (random.Next(1, 81) < ((selectedSkater.tricks[selected].Injury * 10) - (selectedSkater.Skill / 2)))
                     {
                         injuryCount++;
                         Console.WriteLine($"{selectedSkater.tricks[selected].Name} trükk végrehajtása közben sérülés történt!");
