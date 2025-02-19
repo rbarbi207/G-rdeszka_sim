@@ -78,13 +78,13 @@ namespace Gordeszka_sim
                 char v;
                 do
                 {
-                    v = Menu(skaters, selectedSkater!);
+                    v = Menu();
                     switch (v)
                     {
                         case '1':
                             if (selectedSkater == null)
                             {
-                                Versenyzővalasztás(skaters);
+                                Versenyzővalasztás();
                             }
                             else
                             {
@@ -137,7 +137,7 @@ namespace Gordeszka_sim
                                         if (choice == 0)
                                         {
                                             selectedSkater = null!;
-                                            Versenyzővalasztás(skaters);
+                                            Versenyzővalasztás();
                                             break;
                                         }
                                         else
@@ -155,7 +155,7 @@ namespace Gordeszka_sim
                         case '2':
                             if (selectedSkater != null)
                             {
-                                Trukkok(selectedSkater, skaters, tricks, selectedTrick);
+                                Trukkok();
                             }
                             else
                             {
@@ -164,12 +164,12 @@ namespace Gordeszka_sim
                             }
                             break;
                         case '3':
-                            Rekordok(records);
+                            Rekordok();
                             break;
                         case '4':
                             if (selectedSkater != null)
                             {
-                                Simindítás(selectedSkater!, judges, records);
+                                Simindítás();
                             }
                             else
                             {
@@ -188,7 +188,7 @@ namespace Gordeszka_sim
                 while (v != '5');
             }
         }
-        static char Menu(List<Skater> skaters, Skater selectedSkater)
+        static char Menu()
         {
             int choice = 0;
             List<string> menuItems = new List<string>
@@ -241,7 +241,7 @@ namespace Gordeszka_sim
                 }
             }
         }
-        static void Versenyzővalasztás(List<Skater> skaters)
+        static void Versenyzővalasztás()
         {
             int choice = 0;
             while (true)
@@ -292,7 +292,7 @@ namespace Gordeszka_sim
                 }
             }
         }
-        static void Trukkok(Skater selectedSkater, List<Skater> skaters, List<Trick> tricks, Trick selectedTrick)
+        static void Trukkok()
         {
             int choice = 0;
             List<string> trickItems = new List<string>
@@ -340,11 +340,11 @@ namespace Gordeszka_sim
                 {
                     if (choice == 0)
                     {
-                        ujTrukk(tricks, selectedSkater, selectedTrick);
+                        ujTrukk();
                     }
                     else if (choice == 1)
                     {
-                        trukkLista(selectedSkater);
+                        trukkLista();
                     }
                     else if (choice == 2)
                     {
@@ -357,7 +357,7 @@ namespace Gordeszka_sim
                 }
             }
         }
-        static void ujTrukk(List<Trick> tricks, Skater selectedSkater, Trick selectedTrick)
+        static void ujTrukk()
         {
             int choice = 0;
             List<Trick> learnableTricks = new List<Trick>();
@@ -453,10 +453,10 @@ namespace Gordeszka_sim
                     return;
                 }
             }
-
+ 
 
         }
-        static void trukkLista(Skater selectedSkater)
+        static void trukkLista()
         {
             int i = 1;
             Console.Clear();
@@ -469,7 +469,7 @@ namespace Gordeszka_sim
             Console.WriteLine("\n-->Enter<--");
             Console.ReadKey();
         }
-        static void Rekordok(List<Record> records)
+        static void Rekordok()
         {
             Console.Clear();
             Console.WriteLine("Verseny Rekordok\n");
@@ -501,7 +501,7 @@ namespace Gordeszka_sim
             Console.WriteLine("\n-->Enter<--");
             Console.ReadKey();
         }
-        static void Simindítás(Skater selectedSkater, List<Judge> judges, List<Record> records)
+        static void Simindítás()
         {
             Console.Clear();
             if (selectedSkater.tricks.Count < 8)
@@ -578,7 +578,7 @@ namespace Gordeszka_sim
                 {
                     selectedSkater.Skill = 100;
                 }
-                Console.WriteLine($"{selectedSkater.Name} összesen {selectedSkater.Score} pontot szerzett. Skill: {selectedSkater.Skill} (3-el nőt).");
+                Console.WriteLine($"{selectedSkater.Name} összesen {selectedSkater.Score} pontot szerzett. Skill: {selectedSkater.Skill} (3-mal nőt).");
             }
             else if (selectedSkater.Score >= 200)
             {
@@ -587,7 +587,7 @@ namespace Gordeszka_sim
                 {
                     selectedSkater.Skill = 100;
                 }
-                Console.WriteLine($"{selectedSkater.Name} összesen {selectedSkater.Score} pontot szerzett. Skill: {selectedSkater.Skill} (5-el nőt).");
+                Console.WriteLine($"{selectedSkater.Name} összesen {selectedSkater.Score} pontot szerzett. Skill: {selectedSkater.Skill} (5-tel nőt).");
             }
 
             records.Add(new Record(selectedSkater.Name, selectedSkater.Score));
